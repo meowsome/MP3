@@ -1,0 +1,597 @@
+/* Main */
+
+@font-face {
+    font-family: 'Bold';
+    src: url('fonts/Product-Sans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Regular';
+    src: url('fonts/Product-Sans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Light';
+    src: url('fonts/Product-Sans-Light.ttf');
+}
+
+h1 {
+    font-family: 'Bold' !important;
+    font-size: 75px;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6,
+h7 {
+    font-family: 'Bold' !important;
+}
+
+.button,
+button,
+input[type=file] + label {
+    font-family: 'Regular' !important;
+}
+
+h2 {
+    font-size: 62.5px;
+}
+
+h3 {
+    font-size: 50px;
+}
+
+h4 {
+    font-size: 37.5px;
+}
+
+h5 {
+    font-size: 30px;
+}
+
+h6 {
+    font-size: 25px;
+}
+
+h7 {
+    font-size: 22.5px;
+}
+
+a,
+p {
+    font-family: 'Light' !important;
+    font-size: 18px;
+}
+
+a:link,
+a:visited {
+    text-decoration: none;
+}
+
+a:link:hover,
+a:visited:hover {
+    text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.gray,
+.gray a {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.gray-alt,
+.gray-alt a {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.footer .fa-copyright {
+    font-size: 11px;
+    padding: 0;
+}
+
+.footer a,
+.footer p {
+    font-size: 13px;
+}
+
+.card-content a,
+.card-content p,
+.card-content h1,
+.card-content h2,
+.card-content h3,
+.card-content h4,
+.card-content h5,
+.card-content h6,
+.card-content-w-image a,
+.card-content-w-image p,
+.card-content-w-image h1,
+.card-content-w-image h2,
+.card-content-w-image h3,
+.card-content-w-image h4,
+.card-content-w-image h5,
+.card-content-w-image h6 {
+    margin-bottom: 7px;
+}
+
+.card-content li {
+    margin-bottom: 2.5px;
+}
+
+.card-content a,
+.card-content p {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+body {
+    background: #e2e2e2;
+    padding: 0;
+    margin: 0;
+    font-family: 'Light' !important;
+}
+
+.wrapper-horizontal {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.wrapper-vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.shadow {
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card {
+    background: white;
+    position: relative;
+    margin: 20px 1% !important;
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: all 0.25s;
+}
+
+.card-padding {
+    padding: 15px;
+}
+
+.card hr {
+    margin: 10px 0;
+    border: 0 none;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+    padding: 35px 50px;
+}
+
+.card-content-w-image {
+    padding: 0 50px 30px 50px;
+}
+
+.card-footer {
+    padding: 5px 40px 20px 40px;
+}
+
+.card-image {
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transition: all 0.25s;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.left {
+    display: flex;
+    justify-content: flex-start !important;
+    align-items: flex-start;
+}
+
+.right {
+    display: flex;
+    justify-content: flex-end !important;
+    align-items: flex-end;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.w1 {
+    width: 10%;
+}
+
+.w2 {
+    width: 20%;
+}
+
+.w3 {
+    width: 30%;
+}
+
+.w4 {
+    width: 40%;
+}
+
+.w5 {
+    width: 50%;
+}
+
+.w6 {
+    width: 60%;
+}
+
+.w7 {
+    width: 70%;
+}
+
+.w8 {
+    width: 80%;
+}
+
+.w9 {
+    width: 90%;
+}
+
+.w10 {
+    width: 98%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100vh;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header,
+.footer {
+    width: 100%;
+}
+
+.footer p,
+.footer a {
+    font-size: 14px;
+}
+
+.navigation-item {
+    border-radius: 5px;
+    padding: 15px;
+    color: rgba(255, 255, 255, 0.6) !important;
+    transition: all 0.25s;
+}
+
+.navigation-item-active,
+.navigation-item:hover {
+    color: white !important;
+}
+
+.padding {
+    padding: 25px;
+}
+
+.padding-small {
+    padding: 10px;
+}
+
+input[type=file] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.button,
+button,
+input[type=file] + label {
+    background: linear-gradient(200deg, #B993D6, #8CA6DB);
+    cursor: pointer;
+    display: inline-block;
+    padding: 12.5px;
+    color: white !important;
+    outline: none;
+    font-size: 18px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    transition: 0.25s;
+}
+
+.button:hover,
+.button:focus,
+button:hover,
+button:focus,
+input[type=file] + label:hover,
+input[type=file] + label:focus {
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.25);
+    transform: scale(1.025);
+}
+
+input[type=text],
+input[type=email],
+textarea {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, 0.4);
+    background: white;
+    outline: none;
+    resize: none;
+    font-size: 20px;
+    transition: all 0.25s;
+}
+
+textarea {
+    margin-bottom: 20px;
+}
+
+input[type=text] + label {
+    cursor: text;
+    color: rgba(0, 0, 0, 0.4);
+    transform: translate(10px, 40px);
+    transition: all 0.2s;
+}
+
+input[type=text]:focus,
+input[type=email]:focus,
+textarea:focus {
+    color: rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+.form-section {
+    display: flex;
+    flex-flow: column;
+}
+
+.form-section input,
+.form-section textarea {
+    order: 2;
+}
+
+.form-section label {
+    order: 1;
+}
+
+input[type=submit] {
+    display: inline-block;
+}
+
+
+
+
+/* Ripple */
+
+.ripple-light,
+.ripple-dark {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none !important;
+    transition: all 0.25s;
+    margin-bottom: -5px;
+}
+
+.light,
+.dark {
+    display: block;
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: scale(0);
+}
+
+.light {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.dark {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.dark.animate,
+.light.animate {
+    animation: ripple-effect 0.45s linear;
+}
+
+@keyframes ripple-effect {
+    80% {
+        opacity: 0.9;
+        transform: scale(4);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(5);
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    h1 {
+        font-size: 50px;
+    }
+
+    h2 {
+        font-size: 42.5px;
+    }
+
+    h3 {
+        font-size: 35px;
+    }
+
+    h4 {
+        font-size: 27.5;
+    }
+
+    h5 {
+        font-size: 20px;
+    }
+
+    .card {
+        width: 90% !important;
+    }
+
+    .w1,
+    .w2,
+    .w3,
+    .w4,
+    .w5,
+    .w6,
+    .w7,
+    .w8,
+    .w9,
+    .w10 {
+        width: 100%;
+    }
+}
+
+
+
+
+/* Template Settings */
+
+.background {
+    background: linear-gradient(200deg, #B993D6, #8CA6DB);
+}
+
+.background-confirm {
+    background: linear-gradient(200deg, #11998e, #38ef7d);
+}
+
+.background-decline {
+    background: linear-gradient(200deg, #ED213A, #93291E);
+}
+
+.background p,
+.background a,
+.background h4 {
+    color: white;
+}
+
+
+
+/* Animations */
+
+.card,
+.slideIn {
+    opacity: 0;
+    transform: translate(0px, 15px);
+    animation-delay: 0.25s;
+}
+
+.slideIn {
+    animation: slideIn 0.25s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(0px, 15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0, 0px);
+    }
+}
+
+@keyframes loading {
+    0% {
+        opacity: 1;
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 0.4;
+    }
+    80% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#loading {
+    animation: loading 3s infinite;
+}
+
+
+
+
+/* Errors */
+
+.noscript {
+    position: fixed;
+    z-index: 200;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noscript p,
+.noscript a {
+    color: white;
+    width: 50%;
+    text-align: center;
+    font-size: 30px;
+}
+
+.noscript a {
+    color: white;
+}

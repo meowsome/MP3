@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <!-- Site Settings-->
+    <title>About | MP3 Editor</title>
+    <link rel="shortcut icon" type="image/png" href="logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="mp3, mp3 editor, editor, mp3 tagger, tagger, music, file, auto tagger">
+    <meta name="description" content="Use a YouTube to MP3 converter</a> to download the file of a song you like, then upload it here to have it automatically tagged for you!">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="full-width background shadow wrapper-horizontal">
+        <div class="w5">
+            <h3 class="padding" style="margin-left:25px;color:white;">MP3 Editor</h3>
+        </div>
+        <div class="w5 right center">
+            <div class="right center" style="margin-right: 25px;">
+                <a href="/" class="navigation-item ripple-dark">
+                    <h7><i class="fas fa-home"></i>&nbsp;&nbsp;Home</h7>
+                </a>
+                <a href="about" class="navigation-item ripple-dark">
+                    <h7><i class="fas fa-info-circle"></i>&nbsp;&nbsp;About</h7>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="full-width center wrapper-horizontal" style="padding:25px 0;">
+        <div class="section w9 center">
+            <div class="card">
+                <div class="card-content">
+                    <h4>About</h4>
+                    <p>The MP3 Editor is a web app built with HTML, CSS, and JavaScript (Specifically Node.js and jQuery) that acts as an interface to add metadata to your mp3 files. It can attempt to automatically tag a file for you, or you can enter the information yourself if you choose. The design is heavily referenced on Google's Material Design, but comes with its own twist. <a href="https://glitch.com/edit/#!/mp3-editor" target="_blank">You can see the code here.</a></p>
+                    <br>
+                    <h6>How it Works</h6>
+                    <ol>
+                        <li><p>This web app does not convert YouTube videos into mp3 files or fetch song files for you. You need to already have a mp3 file on your computer before you begin.</p></li>
+                        <li><p>When you first upload a file, it attempts to automatically tag your file for you by performing a couple different searches in the YouTube and Genius databases based on the name of the file. If it finds relevant information, it will display the information that it thinks is the most accurate to you. From there, you can either choose to download the file as is or make changes.</p></li>
+                        <ol>
+                            <li><p>If the application found the right info and you download it directly, then that's it! You now have a mp3 file with metadata. Don't forget to delete the old mp3 file from your computer!</p></li>
+                            <li><p>If you chose to make changes, either because the application didn't find the right info or you wanted to make changes to the info it found, then it will show a list of other songs with similar names that it found while performing the search. If you find your song on this list, you can choose it. If you don't find it, then you can either type the name of your song in the search bar at the top and hit "Enter", or click "My Song Isn't Here".</p></li>
+                            <ol>
+                                <li><p>If you choose a song from the list, then it will pull up the song's data in an editor so you can change around the way it looks to your liking. From there, you can download it when you're done!</p></li>
+                                <li><p>If you choose the "My Song Isn't Here" button, it will pull up that same editor, but it won't have any data in it. At this point, the application has exhausted all all of its methods of searching and couldn't find your song. However, you can feel free to enter the information yourself in the boxes provided! Make sure to include all boxes that highlight red, as those are required. The album art requires an image from the internet ending in .png, .jpg, or something of the sort.</p></li>
+                            </ol>
+                        </ol>
+                    </ol>
+                    <br>
+                    <p><i>The MP3 Editor is not intended to promote illegal piracy of music, but is rather the product of some experimental learning that's online for anyone to test out and use. This app was built so I could learn more about the relationship between front-end and back-end code in web development and how to send things back and forth between them. All coding was done by <a href="https://meowsome.github.io">meowsome</a>.</i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer full-width wrapper-horizontal">
+        <p class="gray padding">MP3 Editor v2.1.2 <i class="far fa-copyright"></i> 2020 <a href="https://meowsome.github.io" target="_blank">meowsome</a></p>
+    </div>
+</body>
+<script src="/client.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+</html>

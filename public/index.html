@@ -1,0 +1,190 @@
+<html>
+
+<head>
+    <title>MP3 Editor</title>
+    <link rel="shortcut icon" type="image/png" href="logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="mp3, mp3 editor, editor, mp3 tagger, tagger, music, file, auto tagger">
+    <meta name="description" content="Use a YouTube to MP3 converter</a> to download the file of a song you like, then upload it here to have it automatically tagged for you!">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="full-width background shadow wrapper-horizontal">
+        <div class="w5">
+            <h3 class="padding" style="margin-left:25px;color:white;">MP3 Editor</h3>
+        </div>
+        <div class="w5 right center">
+            <div class="right center" style="margin-right: 25px;">
+                <a href="/" class="navigation-item ripple-dark">
+                    <h7><i class="fas fa-home"></i>&nbsp;&nbsp;Home</h7>
+                </a>
+                <a href="about" class="navigation-item ripple-dark">
+                    <h7><i class="fas fa-info-circle"></i>&nbsp;&nbsp;About</h7>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="full-width center wrapper-horizontal" style="padding:25px 0;">
+
+        
+        <div id="loading" class="section w9 center" style="display: none;">
+            <div class="slideIn" style="padding:100px 0;">
+                <h2><span id="loadingLine"></span></h2>
+            </div>
+        </div>
+
+
+        <div id="main" class="section w9 center">
+            <div class="card w5">
+                <div class="card-content">
+                    <h4>Mp3 Metadata Tagger</h4>
+                    <p>Upload a mp3 file here to have the metadata automatically tagged for you, or enter the data yourself!</p>
+                    <form id="submissionForm" style="margin-top:10px;" method="POST" enctype="multipart/form-data" action="/upload">
+                        <input name="uploadFile" type="file" id="mp3" accept="audio/mp3">
+                        <label for="mp3" class="ripple-dark"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload a File</label>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="preview" class="section w9 center" style="display: none;">
+            <div class="w4 padding-small">
+                <h4 class="padding-small">Okay, how does this look?</h4>
+                <div class="padding-small">
+                    <a class="button ripple-dark background-confirm" id="confirmation" style="margin-right:2px;">It's Perfect</a>
+                    <a class="button ripple-dark background-decline" id="decline" style="margin-left:2px;">Something's Wrong</a>
+                </div>
+            </div>
+            <div class="card w3 background">
+                <img id="songAlbumArt" class="card-image">
+                <div class="card-content">
+                    <h4 id="songName"></h4>
+                    <p><span id="songArtist"></span> &bull; <span id="songAlbum"></span></p>
+                    <p><i><span id="songGenre"></span> <span id="songDisc"></span> <span id="songTrack"></span></i></p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="search" style="display:none;" class="section w9 center">
+            <div class="card w5">
+                <div class="card-content">
+                    <h4>Choose Your Song</h4>
+                    <div class="form-section" style="margin: -10px 0 15px 0">
+                        <input id="searchBox" type="text">
+                        <label for="searchBox">Search Song Name, Artist, or Album...</label>
+                    </div>
+                    <p><i>Choose your song below, or search for it above. Click the button at the bottom if you don't see it.</i></p>
+                    <hr>
+                    <ul></ul>
+                    <a id="noSongResultsButton" class="button ripple-dark" style="margin-right:4px;">My Song Isn't Here</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="edit" style="display:none;" class="section w9 center">
+            <div class="card w5">
+                <div class="card-content">
+                    <h4>Edit the Tags Manually</h4>
+                    <p><i>Please take a look at the tags below and enter the information that's still needed</i></p>
+                    <form id="editData">
+                        <div class="form-section">
+                            <input id="songNameEdit" type="text">
+                            <label for="songNameEdit">Song Name</label>
+                        </div>
+                        <div class="form-section">
+                            <input id="songArtistEdit" type="text">
+                            <label for="songArtistEdit">Artist Name(s)</label>
+                        </div>
+                        <div class="form-section">
+                            <input id="songAlbumEdit" type="text">
+                            <label for="songAlbumEdit">Album Name</label>
+                        </div>
+                        <div class="form-section">
+                            <input id="songAlbumArtEdit" type="text">
+                            <label for="songAlbumArtEdit">Album Artwork URL</label>
+                        </div>
+                        <div class="form-section">
+                            <input id="songGenreEdit" type="text">
+                            <label for="songGenreEdit">Genre (Optional)</label>
+                        </div>
+                        <div class="form-section">
+                            <input id="songDiscEdit" type="text">
+                            <label for="songDiscEdit">Disc (Optional)</label>
+                        </div>
+                        <div class="form-section">
+                            <input id="songTrackEdit" type="text">
+                            <label for="songTrackEdit">Track (Optional)</label>
+                        </div>
+                    </form>
+                    <a class="button ripple-dark" id="confirmation2">Done</a>
+                </div>
+            </div>
+            <div class="padding w3">
+                <div class="card full-width background">
+                    <img id="songAlbumArt2" class="card-image">
+                    <div class="card-content">
+                        <h4 id="songName2"></h4>
+                        <p>
+                            <span id="songArtist2"></span> &bull;
+                            <span id="songAlbum2"></span>
+                        </p>
+                        <p>
+                            <i>
+                                <span id="songGenre2"></span>
+                                <span id="songDisc2"></span>
+                                <span id="songTrack2"></span>
+                            </i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="error" class="section w9 center" style="display: none;">
+            <div class="card w5">
+                <div class="card-content">
+                    <h4>Error</h4>
+                    <p><span id="errorMessage">An unknown error has occurred.</span></p>
+                    <div id="errorButtons" style="display:none;">
+                        <a id="manualButton" class="button ripple-dark" style="margin-right:4px;">Enter Info Manually</a>
+                        <a id="searchButton" class="button ripple-dark" style="margin-right:4px;">Try a Search</a>
+                    </div>
+                    <a class="button ripple-dark" href="/">Back to Start</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="success" class="section w9 center" style="display:none;">
+            <div class="card w5">
+                <div class="card-content">
+                    <h4><i class="fas fa-check"></i> Success</h4>
+                    <p><b><span id="songName1"></span></b> was successfully downloaded!</p>
+                    <a class="button ripple-dark" href="">Upload Another</a>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="footer full-width wrapper-horizontal">
+        <p class="gray padding">MP3 Editor v2.1.2 <i class="far fa-copyright"></i> 2020 <a href="https://meowsome.github.io" target="_blank">meowsome</a></p>
+    </div>
+</body>
+<script src="/client.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+</html>
