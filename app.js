@@ -133,7 +133,9 @@ function fetchData(service, req, res, data, pushToSongArray) {
         //Find index of the file to find
         var fileNum;
         for (let i = 0; i < song.name.length; i++) {
-            if (song.name[i].toLowerCase().indexOf(data[0].title.toLowerCase()) > -1) {
+            let originalName = clearCharas(song.name[i]);
+            let newName = clearCharas(data[0].title);
+            if (originalName.toLowerCase().indexOf(newName.toLowerCase()) > -1) {
                 fileNum = i;
                 break;
             }
@@ -172,7 +174,10 @@ function fetchData(service, req, res, data, pushToSongArray) {
         //Find index of the file to find
         var fileNum;
         for (let i = 0; i < song.name.length; i++) {
-            if (song.name[i].toLowerCase().indexOf(data.hits[0].result.title.toLowerCase()) > -1) {
+            let originalName = clearCharas(song.name[i]);
+            let newName = clearCharas(data.hits[0].result.title);
+          
+            if (originalName.toLowerCase().indexOf(newName.toLowerCase()) > -1) {
                 fileNum = i;
                 break;
             }
@@ -356,4 +361,8 @@ function removeFileSession(comparisonString) {
             break;
         }
     }
+}
+
+function clearCharas(text) {
+  return text.replace(/[\W_]+/g,"");
 }
