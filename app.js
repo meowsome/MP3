@@ -7,7 +7,6 @@ var songSearch = require('song-search');
 var api = require('genius-api');
 var genius = new api(process.env.GENIUS);
 var image_download = require('image-downloader');
-require('dotenv').config();
 
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -16,8 +15,6 @@ app.set('port', (process.env.PORT || 3000));
 app.listen(app.get('port'), function () {
     console.log('Server started on port ' + app.get('port'));
 });
-
-console.log(process.env.GENIUS, process.env.YOUTUBE);
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'));
@@ -79,7 +76,6 @@ app.post('/removesession', upload.single('name'), function (req, res) {
 
 function search(req, res, searchTerm, pushToSongArray) {
     //Initial song search for either file upload or search term
-    console.log(process.env.YOUTUBE);
     songSearch.search({
         search: searchTerm,
         limit: 20,
