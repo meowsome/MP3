@@ -49,7 +49,6 @@ var song = {
     album: [],
     genre: [],
     track: [],
-    disc: [],
     albumArt: []
 };
 
@@ -124,7 +123,7 @@ function fetchData(service, req, res, data, pushToSongArray) {
         if (pushToSongArray && song.name.length > 0) removeSession(data[0].title);
 
         //Push new song data to song tracker (ONLY if this is the first confirmation)
-        if (pushToSongArray) addSession(data[0].title, data[0].artist, data[0].album, data[0].genre, data[0].trackNumber, data[0].discNumber, data[0].coverUrl);
+        if (pushToSongArray) addSession(data[0].title, data[0].artist, data[0].album, data[0].genre, data[0].trackNumber, data[0].coverUrl);
 
         //Find index of the file to find
         var fileNum;
@@ -156,7 +155,6 @@ function fetchData(service, req, res, data, pushToSongArray) {
                 "album": data[i].album,
                 "genre": data[i].genre,
                 "track": data[i].trackNumber,
-                "disc": data[i].discNumber,
                 "albumArt": data[i].coverUrl
             });
         }
@@ -209,7 +207,7 @@ function fetchData(service, req, res, data, pushToSongArray) {
 app.post('/confirmation', upload.single('song'), function (req, res) {
     //ONLY if this is the second confirmation, push new song data to song tracker
     if (req.body.confirmation == 2) {
-        addSession(req.body.name, req.body.artist, req.body.album, req.body.genre, req.body.track, req.body.disc, req.body.albumArt);
+        addSession(req.body.name, req.body.artist, req.body.album, req.body.genre, req.body.track, req.body.albumArt);
         
         finishUp();
     } else {
@@ -244,7 +242,6 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
         }
         if (song.genre[indexNum] != "") dataMeta.genre = song.genre[indexNum];
         if (song.track[indexNum] != "") dataMeta.track = song.track[indexNum];
-        if (song.disc[indexNum] != "") dataMeta.disc = song.disc[indexNum];
         var finalFileLocation = `${process.env.SAVEFOLDER}/${dataMeta.title.replace(/[&?\/]/g, '_')}.mp3`;
 
         //Begin process of appending meta data to the file
@@ -321,7 +318,7 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
       }
 });
 
-function addSession(name, artist, album, genre, track, disc, albumArt) {
+function addSession(name, artist, album, genre, track, albumArt) {
     song.name.push(name);
     song.artist.push(artist);
     song.album.push(album);
@@ -329,8 +326,6 @@ function addSession(name, artist, album, genre, track, disc, albumArt) {
     else song.genre.push("");
     if (track != "" && track != null && track != undefined) song.track.push(track);
     else song.track.push("");
-    if (disc != "" && disc != null && disc != undefined) song.disc.push(disc);
-    else song.disc.push("");
     song.albumArt.push(albumArt);
 }
 
@@ -342,7 +337,6 @@ function removeSession(comparisonString) {
             song.album.splice(i, 1);
             song.genre.splice(i, 1);
             song.track.splice(i, 1);
-            song.disc.splice(i, 1);
             song.albumArt.splice(i, 1);
             break;
         }

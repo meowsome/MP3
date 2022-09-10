@@ -108,7 +108,6 @@ window.addEventListener("load", function () {
         $("#songArtist").html(song.artist);
         $("#songAlbum").html(song.album);
         if (song.genre) $("#songGenre").html(`${song.genre}`);
-        if (song.disc) $("#songDisc").html(`&bull; Disc ${song.disc}`);
         if (song.track) $("#songTrack").html(`&bull; Track ${song.track}`);
     }
 
@@ -196,7 +195,6 @@ window.addEventListener("load", function () {
         $("#songArtistEdit").val(songAlts2["0"][num].artist);
         $("#songAlbumEdit").val(songAlts2["0"][num].album);
         if (songAlts2["0"][num].genre) $("#songGenreEdit").val(songAlts2["0"][num].genre);
-        if (songAlts2["0"][num].disc) $("#songDiscEdit").val(songAlts2["0"][num].disc);
         if (songAlts2["0"][num].track) $("#songTrackEdit").val(songAlts2["0"][num].track);
         $("#songAlbumArtEdit").val(songAlts2["0"][num].albumArt);
         $(".section").hide();
@@ -226,11 +224,6 @@ window.addEventListener("load", function () {
             $('#songArtist2').html($('#songArtistEdit').val());
             $('#songAlbum2').html($('#songAlbumEdit').val());
             $('#songGenre2').html($('#songGenreEdit').val());
-            if ($('#songDiscEdit').val()) {
-                $('#songDisc2').html(`&bull; Disc ${$('#songDiscEdit').val()}`);
-            } else {
-                $('#songDisc2').empty();
-            }
             if ($('#songTrackEdit').val()) {
                 $('#songTrack2').html(`&bull; Track ${$('#songTrackEdit').val()}`);
             } else {
@@ -289,7 +282,6 @@ window.addEventListener("load", function () {
         data.append("confirmation", 2);
         if ($("#songGenreEdit").val()) data.append("genre", $("#songGenreEdit").val());
         if ($("#songTrackEdit").val()) data.append("track", $("#songTrackEdit").val());
-        if ($("#songDiscEdit").val()) data.append("disc", $("#songDiscEdit").val());
     
         clientSongName = $("#songNameEdit").val();
         $.ajax({
