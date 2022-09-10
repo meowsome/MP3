@@ -26,7 +26,7 @@ app.get('/about', function (req, res) {
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, '/tmp');
+        callback(null, process.env.SAVEFOLDER);
     },
     filename: function (req, file, callback) {
         callback(null, file.originalname);
@@ -245,20 +245,20 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
         if (song.genre[indexNum] != "") dataMeta.genre = song.genre[indexNum];
         if (song.track[indexNum] != "") dataMeta.track = song.track[indexNum];
         if (song.disc[indexNum] != "") dataMeta.disc = song.disc[indexNum];
-        var finalFileLocation = `/tmp/${dataMeta.title.replace(/[&?\/]/g, '_')}.mp3`;
+        var finalFileLocation = `${process.env.SAVEFOLDER}/${dataMeta.title.replace(/[&?\/]/g, '_')}.mp3`;
 
         //Begin process of appending meta data to the file
         //Download image
         image_download.image({
                 url: song.albumArt[indexNum],
-                dest: `/tmp/${song.name[indexNum]}.jpg`,
+                dest: `${process.env.SAVEFOLDER}/${song.name[indexNum]}.jpg`,
             })
             .then(({
                 filename,
                 image
             }) => {
                 //Rename file
-                fs.rename(`/tmp/${fileFull[fileIndexNum]}`, finalFileLocation, function (err) {
+                fs.rename(`${process.env.SAVEFOLDER}/${fileFull[fileIndexNum]}`, finalFileLocation, function (err) {
                     if (err) {
                         console.log(err);
                         res.status(500).send("An error has occurred while renaming the file");
@@ -294,10 +294,10 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
                                     return;
                                 }
 
-                                //Open up the download link for this client and attempt to download the file when they visit the link
-                                app.get('/download/:songName', (req, res) => {
-                                    res.download(`/tmp/${req.params.songName}.mp3`);
-                                });
+                            //Open up the download link for this client and attempt to download the file when they visit the link
+                            app.get('/download/:songName', (req, res) => {
+                                res.download(`${process.env.SAVEFOLDER}/${req.params.songName}.mp3`);
+                            });
 
                                 //Tell the client it's okay to go to the download link now
                                 res.status(200).send(dataMeta.title);
