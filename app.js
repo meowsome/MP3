@@ -2,11 +2,11 @@ var express = require('express');
 var path = require('path');
 var multer = require('multer');
 var fs = require('fs');
-var ffmetadata = require('ffmetadata');
-var songSearch = require('song-search');
-var api = require('genius-api');
-var genius = new api(process.env.GENIUS);
+var Genius  = require('genius-lyrics');
+require('dotenv').config();
+var Client = new Genius.Client(process.env.GENIUS);
 var image_download = require('image-downloader');
+var NodeID3 = require('node-id3');
 
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -74,43 +74,18 @@ app.post('/removesession', upload.single('name'), function (req, res) {
 });
 
 function search(req, res, searchTerm, pushToSongArray) {
-    //Initial song search for either file upload or search term
-    songSearch.search({
-        search: searchTerm,
-        limit: 20,
-        itunesCountry: 'us',
-        youtubeAPIKey: process.env.YOUTUBE,
-    }, function (err, data) {
-        if (err) {
-            console.log(err);
-            //If no song found, strip search term of excess & try again
-            searchTerm = searchTerm.replace(/\d|-|lyric|lyrics|music video|mv|C:\\fakepath\\|\s*\(.*?\)\s*|\s*\[.*?\]\s*/gi, "");
-            songSearch.search({
-                search: searchTerm,
-                limit: 20,
-                itunesCountry: 'us',
-                youtubeAPIKey: process.env.YOUTUBE,
-            }, function (err, data) {
-                if (err) {
-                    console.log(err);
-                    //If no song found, search genius for stripped search term
-                    genius.search(searchTerm).then(function (data) {
-                        if (data.hits.length == 0) {
-                            res.status(404).send("No results found");
-                        } else {
-                            fetchData("genius", req, res, data, pushToSongArray);
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                        res.status(500).send("Error searching databases");
-                    });
-                } else {
-                    fetchData("yt", req, res, data, pushToSongArray);
-                }
-            });
+    //If no song found, search genius for stripped search term
+    Client.songs.search(searchTerm).then(async function (data) {
+        if (data.length == 0) {
+            res.status(404).send("No results found");
         } else {
-            fetchData("yt", req, res, data, pushToSongArray);
+            data = await fetchAllData(data);
+            
+            fetchData("genius", req, res, data, pushToSongArray);
         }
+    }).catch(function (err) {
+        console.log(err);
+        res.status(500).send("Error searching databases");
     });
 }
 
@@ -118,82 +93,39 @@ function fetchData(service, req, res, data, pushToSongArray) {
     var songAlts = [];
     var songReorganized;
 
-    if (service == "yt") {
-        //Remove old song data from song tracker
-        if (pushToSongArray && song.name.length > 0) removeSession(data[0].title);
+    //Remove old song data from song tracker
+    if (pushToSongArray && song.name.length > 0) removeSession(data[0].title);
 
-        //Push new song data to song tracker (ONLY if this is the first confirmation)
-        if (pushToSongArray) addSession(data[0].title, data[0].artist, data[0].album, data[0].genre, data[0].trackNumber, data[0].coverUrl);
+    //Push new song data to song tracker (ONLY if this is the first confirmation)
+    if (pushToSongArray) addSession(data[0].featuredTitle, data[0]._raw.primary_artist.name, data[0].album.name, "", "", data[0]._raw.header_image_url);
 
-        //Find index of the file to find
-        var fileNum;
-        for (let i = 0; i < song.name.length; i++) {
-            let originalName = clearCharas(song.name[i]);
-            let newName = clearCharas(data[0].title);
-            if (originalName.toLowerCase().indexOf(newName.toLowerCase()) > -1) {
-                fileNum = i;
-                break;
-            }
+    //Find index of the file to find
+    var fileNum;
+    for (let i = 0; i < song.name.length; i++) {
+        let originalName = clearCharas(song.name[i]);
+        let newName = clearCharas(data[0].title);
+        if (originalName.toLowerCase().indexOf(newName.toLowerCase()) > -1) {
+            fileNum = i;
+            break;
         }
+    }
 
-        //Reorganize song data for the client
-        songReorganized = {
-            originalName: fileName[fileNum],
-            name: data[0].title,
-            artist: data[0].artist,
-            album: data[0].album,
-            genre: data[0].genre,
-            track: data[0].trackNumber,
-            disc: data[0].discNumber,
-            albumArt: data[0].coverUrl,
-        }
+    //Reorganize song data for the client
+    songReorganized = {
+        originalName: fileName[fileNum],
+        name: data[0].featuredTitle,
+        artist: data[0]._raw.primary_artist.name,
+        album: data[0].album.name,
+        albumArt: data[0]._raw.header_image_url,
+    }
 
-        for (let i = 0; i < data.length; i++) {
-            songAlts.push({
-                "name": data[i].title,
-                "artist": data[i].artist,
-                "album": data[i].album,
-                "genre": data[i].genre,
-                "track": data[i].trackNumber,
-                "albumArt": data[i].coverUrl
-            });
-        }
-    } else {
-        //Remove old song data from song tracker
-        if (pushToSongArray && song.name.length > 0) removeSession(data.hits[0].result.title);
-
-        //Push new song data to song tracker (ONLY if this is the first confirmation)
-        if (pushToSongArray) addSession(data.hits[0].result.title_with_featured, data.hits[0].result.primary_artist.name, data.hits[0].result.title, "", "", "", data.hits[0].result.header_image_url);
-
-        //Find index of the file to find
-        var fileNum;
-        for (let i = 0; i < song.name.length; i++) {
-            let originalName = clearCharas(song.name[i]);
-            let newName = clearCharas(data.hits[0].result.title);
-          
-            if (originalName.toLowerCase().indexOf(newName.toLowerCase()) > -1) {
-                fileNum = i;
-                break;
-            }
-        }
-
-        //Reorganize song data for the client
-        songReorganized = {
-            originalName: fileName[fileNum],
-            name: data.hits[0].result.title_with_featured,
-            artist: data.hits[0].result.primary_artist.name,
-            album: data.hits[0].result.title,
-            albumArt: data.hits[0].result.header_image_url,
-        }
-
-        for (let i = 0; i < data.hits.length; i++) {
-            songAlts.push({
-                "name": data.hits[i].result.title_with_featured,
-                "artist": data.hits[i].result.primary_artist.name,
-                "album": data.hits[i].result.title,
-                "albumArt": data.hits[i].result.header_image_url
-            });
-        }
+    for (let i = 0; i < data.length; i++) {
+        songAlts.push({
+            "name": data[i].featuredTitle,
+            "artist": data[i]._raw.primary_artist.name,
+            "album": data[i].title,
+            "albumArt": data[i]._raw.header_image_url
+        });
     }
 
     res.status(200).send({
@@ -232,16 +164,14 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
         }
 
         //Prepare final data to be used later on in appending the data to the file
-        var dataImage = {
-            attachments: [`/tmp/${song.name[indexNum]}.jpg`],
-        }
         var dataMeta = {
             title: song.name[indexNum],
             artist: song.artist[indexNum],
             album: song.album[indexNum],
+            APIC: `${process.env.SAVEFOLDER}/${song.name[indexNum]}.jpg`
         }
         if (song.genre[indexNum] != "") dataMeta.genre = song.genre[indexNum];
-        if (song.track[indexNum] != "") dataMeta.track = song.track[indexNum];
+        if (song.track[indexNum] != "") dataMeta.trackNumber = song.track[indexNum];
         var finalFileLocation = `${process.env.SAVEFOLDER}/${dataMeta.title.replace(/[&?\/]/g, '_')}.mp3`;
 
         //Begin process of appending meta data to the file
@@ -264,7 +194,7 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
                         return;
                     }
                     //Attempt to find renamed file again
-                    ffmetadata.read(finalFileLocation, function (err) {
+                    NodeID3.read(finalFileLocation, function (err) {
                         if (err) {
                             console.log(err);
                             res.status(500).send("An error has occurred while locating the file");
@@ -273,7 +203,7 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
                             return;
                         }
                         //Write meta data to the file
-                        ffmetadata.write(finalFileLocation, dataMeta, function (err) {
+                        NodeID3.write(dataMeta, finalFileLocation, function (err) {
                             if (err) {
                                 console.log(err);
                                 res.status(500).send("An error has occurred while writing the info to the file");
@@ -281,31 +211,21 @@ app.post('/confirmation', upload.single('song'), function (req, res) {
                                 removeFileSession(req.body.originalName);
                                 return;
                             }
-                            //Write album art to file
-                            ffmetadata.write(finalFileLocation, {}, dataImage, function (err) {
-                                if (err) {
-                                    console.log(err);
-                                    res.status(500).send("An error has occurred while writing the album art to the file");
-                                    removeSession(req.body.name);
-                                    removeFileSession(req.body.originalName);
-                                    return;
-                                }
 
                             //Open up the download link for this client and attempt to download the file when they visit the link
                             app.get('/download/:songName', (req, res) => {
                                 res.download(`${process.env.SAVEFOLDER}/${req.params.songName}.mp3`);
                             });
 
-                                //Tell the client it's okay to go to the download link now
-                                res.status(200).send(dataMeta.title);
+                            //Tell the client it's okay to go to the download link now
+                            res.status(200).send(dataMeta.title);
 
-                                //Wait 1 second and then remove song from song tracker array and file arrays
-                                setTimeout(function () {
-                                    removeSession(req.body.name);
+                            //Wait 1 second and then remove song from song tracker array and file arrays
+                            setTimeout(function () {
+                                removeSession(req.body.name);
 
-                                    removeFileSession(req.body.originalName);
-                                }, 1000);
-                            });
+                                removeFileSession(req.body.originalName);
+                            }, 1000);
                         });
                     });
                 });
@@ -355,4 +275,9 @@ function removeFileSession(comparisonString) {
 
 function clearCharas(text) {
   return text.replace(/[\W_]+/g,"");
+}
+
+async function fetchAllData(data) {
+    var data = await data.map(async song => await song.fetch()); // Fetch all song details
+    return Promise.all(data);
 }
