@@ -73,7 +73,8 @@ window.addEventListener("load", function () {
     $("#submissionForm").change(function () {
         load();
         var data = new FormData();
-        data.append('uploadFile', $('#submissionForm input[type=file]')[0].files[0]);
+        var uploadedFile = $('#submissionForm input[type=file]')[0].files[0];
+        data.append('uploadFile', uploadedFile);
         $.ajax({
             url: '/upload',
             method: 'POST',
@@ -92,6 +93,7 @@ window.addEventListener("load", function () {
                 clientSongName = songReorganized.name;
             },
             error: function (data) {
+                clientSongOriginalName = uploadedFile.name.split(".mp3")[0];
                 end(false, data);
             },
         });
