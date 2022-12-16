@@ -96,8 +96,11 @@ function fetchData(service, req, res, data, pushToSongArray) {
     //Remove old song data from song tracker
     if (pushToSongArray && song.name.length > 0) removeSession(data[0].title);
 
+    // If no album name found, set album name as title
+    var album = (data[0].album) ? data[0].album.name : data[0].featuredTitle;
+
     //Push new song data to song tracker (ONLY if this is the first confirmation)
-    if (pushToSongArray) addSession(data[0].featuredTitle, data[0]._raw.primary_artist.name, data[0].album.name, "", "", data[0]._raw.header_image_url);
+    if (pushToSongArray) addSession(data[0].featuredTitle, data[0]._raw.primary_artist.name, album, "", "", data[0]._raw.header_image_url);
 
     //Find index of the file to find
     var fileNum;
@@ -115,7 +118,7 @@ function fetchData(service, req, res, data, pushToSongArray) {
         originalName: fileName[fileNum],
         name: data[0].featuredTitle,
         artist: data[0]._raw.primary_artist.name,
-        album: data[0].album.name,
+        album: album,
         albumArt: data[0]._raw.header_image_url,
     }
 
